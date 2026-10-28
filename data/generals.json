@@ -1,162 +1,398 @@
 [
   {
-    "id": "sp_xunyu",
-    "name": "SP荀彧",
-    "camp": "WEI",
-    "gender": "Male",
-    "cost": 7,
-    "base_aptitude": {
-      "Cavalry": "S",
-      "Shield": "B",
-      "Bow": "A",
-      "Spear": "C"
-    },
-    "base_stats": {
-      "force": 31.0,
-      "intelligence": 95.0,
-      "command": 87.0,
-      "speed": 52.0
-    },
-    "stat_growth": {
-      "force": 0.28,
-      "intelligence": 2.63,
-      "command": 1.86,
-      "speed": 0.74
-    },
-    "innate_tactic_id": "ji_ci_fang_ce",
-    "innate_tactic_type": "Command",
-    "tags": {
-      "role": ["Support", "Damage_Mitigation", "Control_Counter"],
-      "stat_scaling": ["intelligence"],
-      "mechanisms": ["警戒", "解控", "反擊控制"]
-    }
-  },
-  {
-    "id": "guan_yinping",
-    "name": "關銀屏",
-    "camp": "SHU",
-    "gender": "Female",
-    "cost": 6,
-    "base_aptitude": {
-      "Cavalry": "S",
-      "Shield": "B",
-      "Bow": "B",
-      "Spear": "S"
-    },
-    "base_stats": {
-      "force": 82.0,
-      "intelligence": 52.0,
-      "command": 81.0,
-      "speed": 66.0
-    },
-    "stat_growth": {
-      "force": 2.09,
-      "intelligence": 0.98,
-      "command": 1.45,
-      "speed": 1.21
-    },
-    "innate_tactic_id": "jiang_men_hu_nu",
-    "innate_tactic_type": "Active",
-    "tags": {
-      "role": ["Secondary_Damage", "Control_Initiator"],
-      "stat_scaling": ["force", "speed"],
-      "mechanisms": ["虎嗔", "震懾", "多段傷害需求"]
-    }
-  },
-  {
-    "id": "zhang_jiao",
-    "name": "張角",
-    "camp": "QUN",
-    "gender": "Male",
-    "cost": 7,
-    "base_aptitude": {
-      "Cavalry": "B",
-      "Shield": "S",
-      "Bow": "S",
-      "Spear": "B"
-    },
-    "base_stats": {
-      "force": 27.0,
-      "intelligence": 93.0,
-      "command": 84.0,
-      "speed": 38.0
-    },
-    "stat_growth": {
-      "force": 0.32,
-      "intelligence": 2.38,
-      "command": 1.77,
-      "speed": 0.58
-    },
-    "innate_tactic_id": "wu_lei_hong_ding",
-    "innate_tactic_type": "Active",
-    "tags": {
-      "role": ["Primary_Damage"],
-      "stat_scaling": ["intelligence"],
-      "mechanisms": ["多段打擊", "震懾", "天公質變"]
-    }
-  },
-  {
     "id": "cao_cao",
     "name": "曹操",
     "camp": "WEI",
-    "gender": "Male",
     "cost": 7,
-    "base_aptitude": {
-      "Cavalry": "S",
-      "Shield": "S",
-      "Bow": "A",
-      "Spear": "A"
-    },
-    "base_stats": {
-      "force": 72.0,
-      "intelligence": 91.0,
-      "command": 99.0,
-      "speed": 64.0
-    },
-    "stat_growth": {
-      "force": 1.33,
-      "intelligence": 1.94,
-      "command": 2.70,
-      "speed": 1.18
-    },
-    "innate_tactic_id": "luan_shi_jian_xiong",
-    "innate_tactic_type": "Command",
-    "tags": {
-      "role": ["Core_Support", "Tank"],
-      "stat_scaling": ["command", "intelligence"],
-      "mechanisms": ["全隊增傷", "自身免傷", "援護適配"]
-    }
+    "base_aptitude": { "Cavalry": "S", "Shield": "S", "Bow": "A", "Spear": "A" },
+    "base_stats": { "force": 72.0, "intelligence": 91.0, "command": 99.0, "speed": 64.0 },
+    "stat_growth": { "force": 1.33, "intelligence": 1.94, "command": 2.70, "speed": 1.18 },
+    "innate_tactic_id": "亂世奸雄",
+    "innate_tactic_type": "Command"
   },
   {
     "id": "sima_yi",
     "name": "司馬懿",
     "camp": "WEI",
-    "gender": "Male",
     "cost": 7,
-    "base_aptitude": {
-      "Cavalry": "A",
-      "Shield": "S",
-      "Bow": "A",
-      "Spear": "S"
-    },
-    "base_stats": {
-      "force": 64.0,
-      "intelligence": 98.0,
-      "command": 98.0,
-      "speed": 41.0
-    },
-    "stat_growth": {
-      "force": 0.81,
-      "intelligence": 2.67,
-      "command": 2.06,
-      "speed": 0.65
-    },
-    "innate_tactic_id": "ying_lang_gu_she",
-    "innate_tactic_type": "Command",
-    "tags": {
-      "role": ["Late_Game_Carry"],
-      "stat_scaling": ["intelligence"],
-      "mechanisms": ["後四回合爆發", "奇謀", "指揮輸出"]
-    }
+    "base_aptitude": { "Cavalry": "A", "Shield": "S", "Bow": "A", "Spear": "S" },
+    "base_stats": { "force": 64.0, "intelligence": 98.0, "command": 98.0, "speed": 41.0 },
+    "stat_growth": { "force": 0.81, "intelligence": 2.67, "command": 2.06, "speed": 0.65 },
+    "innate_tactic_id": "鷹視狼顧",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "man_chong",
+    "name": "滿寵",
+    "camp": "WEI",
+    "cost": 6,
+    "base_aptitude": { "Cavalry": "B", "Shield": "S", "Bow": "B", "Spear": "A" },
+    "base_stats": { "force": 64.0, "intelligence": 84.0, "command": 85.0, "speed": 55.0 },
+    "stat_growth": { "force": 0.75, "intelligence": 2.08, "command": 1.95, "speed": 0.92 },
+    "innate_tactic_id": "鎮楫左右",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "sp_xunyu",
+    "name": "SP荀彧",
+    "camp": "WEI",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "S", "Shield": "B", "Bow": "A", "Spear": "C" },
+    "base_stats": { "force": 31.0, "intelligence": 95.0, "command": 87.0, "speed": 52.0 },
+    "stat_growth": { "force": 0.28, "intelligence": 2.63, "command": 1.86, "speed": 0.74 },
+    "innate_tactic_id": "機鑑先識",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "sp_guojia",
+    "name": "SP郭嘉",
+    "camp": "WEI",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "S", "Shield": "C", "Bow": "S", "Spear": "B" },
+    "base_stats": { "force": 23.0, "intelligence": 96.0, "command": 78.0, "speed": 67.0 },
+    "stat_growth": { "force": 0.20, "intelligence": 2.64, "command": 1.66, "speed": 1.05 },
+    "innate_tactic_id": "經天緯地",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "jia_xu",
+    "name": "賈詡",
+    "camp": "WEI",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "S", "Shield": "A", "Bow": "S", "Spear": "B" },
+    "base_stats": { "force": 41.0, "intelligence": 97.0, "command": 88.0, "speed": 58.0 },
+    "stat_growth": { "force": 0.35, "intelligence": 2.65, "command": 1.77, "speed": 0.81 },
+    "innate_tactic_id": "營謀神算",
+    "innate_tactic_type": "Active"
+  },
+  {
+    "id": "guo_jia",
+    "name": "郭嘉",
+    "camp": "WEI",
+    "cost": 5,
+    "base_aptitude": { "Cavalry": "S", "Shield": "C", "Bow": "A", "Spear": "C" },
+    "base_stats": { "force": 15.0, "intelligence": 96.0, "command": 72.0, "speed": 67.0 },
+    "stat_growth": { "force": 0.12, "intelligence": 2.64, "command": 1.56, "speed": 1.13 },
+    "innate_tactic_id": "十勝十敗",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "xiahou_yuan",
+    "name": "夏侯淵",
+    "camp": "WEI",
+    "cost": 5,
+    "base_aptitude": { "Cavalry": "S", "Shield": "B", "Bow": "S", "Spear": "C" },
+    "base_stats": { "force": 91.0, "intelligence": 68.0, "command": 78.0, "speed": 75.0 },
+    "stat_growth": { "force": 2.07, "intelligence": 0.84, "command": 1.28, "speed": 1.33 },
+    "innate_tactic_id": "將行其疾",
+    "innate_tactic_type": "Assault"
+  },
+  {
+    "id": "zhang_liao",
+    "name": "張遼",
+    "camp": "WEI",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "S", "Shield": "B", "Bow": "B", "Spear": "S" },
+    "base_stats": { "force": 92.0, "intelligence": 78.0, "command": 95.0, "speed": 77.0 },
+    "stat_growth": { "force": 2.33, "intelligence": 1.09, "command": 1.74, "speed": 1.43 },
+    "innate_tactic_id": "陷陣突襲",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "liu_bei",
+    "name": "劉備",
+    "camp": "SHU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "A", "Shield": "S", "Bow": "A", "Spear": "A" },
+    "base_stats": { "force": 77.0, "intelligence": 74.0, "command": 81.0, "speed": 53.0 },
+    "stat_growth": { "force": 1.18, "intelligence": 1.58, "command": 2.04, "speed": 0.79 },
+    "innate_tactic_id": "仁德載世",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "guan_yu",
+    "name": "關羽",
+    "camp": "SHU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "S", "Shield": "A", "Bow": "A", "Spear": "S" },
+    "base_stats": { "force": 97.0, "intelligence": 79.0, "command": 97.0, "speed": 74.0 },
+    "stat_growth": { "force": 2.68, "intelligence": 1.05, "command": 2.04, "speed": 1.32 },
+    "innate_tactic_id": "威震華夏",
+    "innate_tactic_type": "Active"
+  },
+  {
+    "id": "zhang_fei",
+    "name": "張飛",
+    "camp": "SHU",
+    "cost": 6,
+    "base_aptitude": { "Cavalry": "A", "Shield": "S", "Bow": "C", "Spear": "S" },
+    "base_stats": { "force": 98.0, "intelligence": 30.0, "command": 94.0, "speed": 80.0 },
+    "stat_growth": { "force": 2.69, "intelligence": 0.22, "command": 1.69, "speed": 1.26 },
+    "innate_tactic_id": "燕人咆哮",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "sp_guanyu",
+    "name": "SP關羽",
+    "camp": "SHU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "S", "Shield": "A", "Bow": "A", "Spear": "S" },
+    "base_stats": { "force": 96.0, "intelligence": 77.0, "command": 98.0, "speed": 74.0 },
+    "stat_growth": { "force": 2.70, "intelligence": 1.05, "command": 2.12, "speed": 1.33 },
+    "innate_tactic_id": "水淹七軍",
+    "innate_tactic_type": "Active"
+  },
+  {
+    "id": "zhu_ge_liang",
+    "name": "諸葛亮",
+    "camp": "SHU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "C", "Shield": "B", "Bow": "S", "Spear": "S" },
+    "base_stats": { "force": 38.0, "intelligence": 100.0, "command": 95.0, "speed": 55.0 },
+    "stat_growth": { "force": 0.38, "intelligence": 3.00, "command": 2.36, "speed": 0.90 },
+    "innate_tactic_id": "神機妙算",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "sp_zhugeliang",
+    "name": "SP諸葛亮",
+    "camp": "SHU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "C", "Shield": "B", "Bow": "S", "Spear": "S" },
+    "base_stats": { "force": 37.0, "intelligence": 100.0, "command": 98.0, "speed": 56.0 },
+    "stat_growth": { "force": 0.38, "intelligence": 3.00, "command": 2.38, "speed": 0.92 },
+    "innate_tactic_id": "錦囊妙計",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "pang_tong",
+    "name": "龐統",
+    "camp": "SHU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "C", "Shield": "B", "Bow": "S", "Spear": "A" },
+    "base_stats": { "force": 34.0, "intelligence": 97.0, "command": 85.0, "speed": 51.0 },
+    "stat_growth": { "force": 0.31, "intelligence": 2.61, "command": 1.79, "speed": 0.72 },
+    "innate_tactic_id": "連環計",
+    "innate_tactic_type": "Active"
+  },
+  {
+    "id": "jiang_wei",
+    "name": "姜維",
+    "camp": "SHU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "S", "Shield": "A", "Bow": "S", "Spear": "A" },
+    "base_stats": { "force": 89.0, "intelligence": 90.0, "command": 92.0, "speed": 64.0 },
+    "stat_growth": { "force": 2.01, "intelligence": 2.03, "command": 1.91, "speed": 1.07 },
+    "innate_tactic_id": "義膽雄心",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "wei_yan",
+    "name": "魏延",
+    "camp": "SHU",
+    "cost": 6,
+    "base_aptitude": { "Cavalry": "A", "Shield": "S", "Bow": "A", "Spear": "S" },
+    "base_stats": { "force": 92.0, "intelligence": 69.0, "command": 85.0, "speed": 66.0 },
+    "stat_growth": { "force": 2.37, "intelligence": 0.92, "command": 1.48, "speed": 1.21 },
+    "innate_tactic_id": "奇兵間道",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "fa_zheng",
+    "name": "法正",
+    "camp": "SHU",
+    "cost": 4,
+    "base_aptitude": { "Cavalry": "C", "Shield": "A", "Bow": "A", "Spear": "A" },
+    "base_stats": { "force": 38.0, "intelligence": 94.0, "command": 76.0, "speed": 49.0 },
+    "stat_growth": { "force": 0.33, "intelligence": 2.21, "command": 1.45, "speed": 0.71 },
+    "innate_tactic_id": "以逸待勞",
+    "innate_tactic_type": "Active"
+  },
+  {
+    "id": "guan_yinping",
+    "name": "關銀屏",
+    "camp": "SHU",
+    "cost": 6,
+    "base_aptitude": { "Cavalry": "S", "Shield": "B", "Bow": "B", "Spear": "S" },
+    "base_stats": { "force": 82.0, "intelligence": 52.0, "command": 81.0, "speed": 66.0 },
+    "stat_growth": { "force": 2.09, "intelligence": 0.98, "command": 1.45, "speed": 1.21 },
+    "innate_tactic_id": "將門虎女",
+    "innate_tactic_type": "Active"
+  },
+  {
+    "id": "zhao_yun",
+    "name": "趙雲",
+    "camp": "SHU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "S", "Shield": "A", "Bow": "A", "Spear": "S" },
+    "base_stats": { "force": 96.0, "intelligence": 77.0, "command": 96.0, "speed": 66.0 },
+    "stat_growth": { "force": 2.62, "intelligence": 0.96, "command": 2.07, "speed": 1.11 },
+    "innate_tactic_id": "一身是膽",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "lu_xun",
+    "name": "陸遜",
+    "camp": "WU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "A", "Shield": "B", "Bow": "S", "Spear": "S" },
+    "base_stats": { "force": 69.0, "intelligence": 95.0, "command": 94.0, "speed": 32.0 },
+    "stat_growth": { "force": 0.60, "intelligence": 2.60, "command": 1.88, "speed": 0.51 },
+    "innate_tactic_id": "火燒連營",
+    "innate_tactic_type": "Active"
+  },
+  {
+    "id": "tai_shi_ci",
+    "name": "太史慈",
+    "camp": "WU",
+    "cost": 6,
+    "base_aptitude": { "Cavalry": "S", "Shield": "C", "Bow": "S", "Spear": "B" },
+    "base_stats": { "force": 93.0, "intelligence": 69.0, "command": 90.0, "speed": 67.0 },
+    "stat_growth": { "force": 2.09, "intelligence": 0.77, "command": 1.49, "speed": 1.11 },
+    "innate_tactic_id": "神射",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "zhou_tai",
+    "name": "周泰",
+    "camp": "WU",
+    "cost": 6,
+    "base_aptitude": { "Cavalry": "S", "Shield": "S", "Bow": "A", "Spear": "A" },
+    "base_stats": { "force": 84.0, "intelligence": 48.0, "command": 95.0, "speed": 51.0 },
+    "stat_growth": { "force": 1.54, "intelligence": 0.58, "command": 2.08, "speed": 0.81 },
+    "innate_tactic_id": "肉身鐵壁",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "sun_shang_xiang",
+    "name": "孫尚香",
+    "camp": "WU",
+    "cost": 6,
+    "base_aptitude": { "Cavalry": "S", "Shield": "B", "Bow": "S", "Spear": "B" },
+    "base_stats": { "force": 86.0, "intelligence": 63.0, "command": 80.0, "speed": 71.0 },
+    "stat_growth": { "force": 2.39, "intelligence": 0.85, "command": 1.46, "speed": 1.25 },
+    "innate_tactic_id": "弓腰姬",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "sun_quan",
+    "name": "孫權",
+    "camp": "WU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "A", "Shield": "B", "Bow": "S", "Spear": "A" },
+    "base_stats": { "force": 79.0, "intelligence": 80.0, "command": 89.0, "speed": 67.0 },
+    "stat_growth": { "force": 1.63, "intelligence": 1.65, "command": 1.67, "speed": 1.14 },
+    "innate_tactic_id": "坐斷東南",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "cheng_pu",
+    "name": "程普",
+    "camp": "WU",
+    "cost": 5,
+    "base_aptitude": { "Cavalry": "B", "Shield": "A", "Bow": "A", "Spear": "S" },
+    "base_stats": { "force": 79.0, "intelligence": 79.0, "command": 84.0, "speed": 51.0 },
+    "stat_growth": { "force": 1.19, "intelligence": 1.44, "command": 2.06, "speed": 0.89 },
+    "innate_tactic_id": "勇烈持重",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "sp_lv_meng",
+    "name": "SP呂蒙",
+    "camp": "WU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "A", "Shield": "B", "Bow": "S", "Spear": "S" },
+    "base_stats": { "force": 81.0, "intelligence": 91.0, "command": 91.0, "speed": 55.0 },
+    "stat_growth": { "force": 1.71, "intelligence": 1.89, "command": 1.95, "speed": 0.95 },
+    "innate_tactic_id": "溯江搖櫓",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "lu_su",
+    "name": "魯肅",
+    "camp": "WU",
+    "cost": 6,
+    "base_aptitude": { "Cavalry": "B", "Shield": "A", "Bow": "S", "Spear": "B" },
+    "base_stats": { "force": 43.0, "intelligence": 92.0, "command": 84.0, "speed": 53.0 },
+    "stat_growth": { "force": 0.38, "intelligence": 2.47, "command": 1.66, "speed": 0.81 },
+    "innate_tactic_id": "濟貧好施",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "zhou_yu",
+    "name": "周瑜",
+    "camp": "WU",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "B", "Shield": "B", "Bow": "S", "Spear": "A" },
+    "base_stats": { "force": 71.0, "intelligence": 96.0, "command": 95.0, "speed": 42.0 },
+    "stat_growth": { "force": 0.82, "intelligence": 2.69, "command": 1.66, "speed": 0.61 },
+    "innate_tactic_id": "神火計",
+    "innate_tactic_type": "Passive"
+  },
+  {
+    "id": "zhang_jiao",
+    "name": "張角",
+    "camp": "QUN",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "B", "Shield": "S", "Bow": "S", "Spear": "B" },
+    "base_stats": { "force": 27.0, "intelligence": 93.0, "command": 84.0, "speed": 38.0 },
+    "stat_growth": { "force": 0.32, "intelligence": 2.38, "command": 1.77, "speed": 0.58 },
+    "innate_tactic_id": "五雷轟頂",
+    "innate_tactic_type": "Active"
+  },
+  {
+    "id": "lv_bu",
+    "name": "呂布",
+    "camp": "QUN",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "S", "Shield": "B", "Bow": "S", "Spear": "A" },
+    "base_stats": { "force": 100.0, "intelligence": 26.0, "command": 97.0, "speed": 74.0 },
+    "stat_growth": { "force": 3.00, "intelligence": 0.27, "command": 1.40, "speed": 1.41 },
+    "innate_tactic_id": "天下無雙",
+    "innate_tactic_type": "Active"
+  },
+  {
+    "id": "zuo_ci",
+    "name": "左慈",
+    "camp": "QUN",
+    "cost": 5,
+    "base_aptitude": { "Cavalry": "C", "Shield": "C", "Bow": "C", "Spear": "C" },
+    "base_stats": { "force": 21.0, "intelligence": 94.0, "command": 70.0, "speed": 35.0 },
+    "stat_growth": { "force": 0.18, "intelligence": 2.45, "command": 1.45, "speed": 0.55 },
+    "innate_tactic_id": "金丹秘術",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "yu_ji",
+    "name": "于吉",
+    "camp": "QUN",
+    "cost": 5,
+    "base_aptitude": { "Cavalry": "C", "Shield": "B", "Bow": "B", "Spear": "C" },
+    "base_stats": { "force": 18.0, "intelligence": 92.0, "command": 68.0, "speed": 40.0 },
+    "stat_growth": { "force": 0.15, "intelligence": 2.40, "command": 1.50, "speed": 0.60 },
+    "innate_tactic_id": "興雲布雨",
+    "innate_tactic_type": "Command"
+  },
+  {
+    "id": "diao_chan",
+    "name": "貂蟬",
+    "camp": "QUN",
+    "cost": 5,
+    "base_aptitude": { "Cavalry": "C", "Shield": "B", "Bow": "B", "Spear": "C" },
+    "base_stats": { "force": 26.0, "intelligence": 81.0, "command": 71.0, "speed": 72.0 },
+    "stat_growth": { "force": 0.24, "intelligence": 1.95, "command": 1.35, "speed": 1.25 },
+    "innate_tactic_id": "閉月",
+    "innate_tactic_type": "Active"
+  },
+  {
+    "id": "yuan_shao_sp",
+    "name": "SP袁紹",
+    "camp": "QUN",
+    "cost": 7,
+    "base_aptitude": { "Cavalry": "A", "Shield": "A", "Bow": "S", "Spear": "A" },
+    "base_stats": { "force": 82.0, "intelligence": 75.0, "command": 81.0, "speed": 62.0 },
+    "stat_growth": { "force": 2.06, "intelligence": 1.48, "command": 1.79, "speed": 1.04 },
+    "innate_tactic_id": "高櫓連營",
+    "innate_tactic_type": "Passive"
   }
 ]
