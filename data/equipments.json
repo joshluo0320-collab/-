@@ -1,0 +1,91 @@
+[
+  {
+    "id": "trait_yuan_hu",
+    "name": "援護",
+    "slot": "Armor",
+    "exclusive_generals": [],
+    "priority_level": "S",
+    "description": "戰鬥首回合，為全體友軍吸收普通攻擊。",
+    "synergy_rules": {
+      "preferred_tactics": ["mei_huo", "zan_bi_qi_feng"],
+      "preferred_roles": ["Tank", "Support"],
+      "best_users": ["cao_cao", "lu_xun", "cheng_pu", "sp_xunyu"],
+      "score_bonus": 25,
+      "tag_activations": ["Lure_Damage_Trigger", "MeiHuo_Enabler"]
+    }
+  },
+  {
+    "id": "trait_cai_ta",
+    "name": "踩踏",
+    "slot": "Horse",
+    "exclusive_generals": [],
+    "priority_level": "S",
+    "description": "普通攻擊後對目標造成微量兵刃傷害（3次普攻即多觸發3段判定）。",
+    "synergy_rules": {
+      "preferred_generals": ["guan_yinping"],
+      "preferred_roles": ["Multi_Hit_Attacker"],
+      "best_users": ["guan_yinping", "sp_guanyu", "sun_quan"],
+      "score_bonus": 30,
+      "tag_activations": ["Fast_Stun_Stack"]
+    }
+  },
+  {
+    "id": "trait_tian_gong",
+    "name": "天公",
+    "slot": "Weapon",
+    "exclusive_generals": ["zhang_jiao"],
+    "priority_level": "S",
+    "description": "張角專屬：施放五雷轟頂時，有 70% 機率額外增加一次閃電打擊（由 5 段增至 6 段）。",
+    "synergy_rules": {
+      "preferred_generals": ["zhang_jiao"],
+      "preferred_roles": ["Primary_Damage"],
+      "best_users": ["zhang_jiao"],
+      "score_bonus": 35,
+      "unlocks_archetype": "T0_TianGong_Shield"
+    }
+  },
+  {
+    "id": "trait_gang_lie",
+    "name": "剛烈",
+    "slot": "Armor",
+    "exclusive_generals": ["xiahou_dun"],
+    "priority_level": "A",
+    "description": "夏侯惇專屬：受到兵刃傷害時提高反擊傷害率。",
+    "synergy_rules": {
+      "preferred_generals": ["xiahou_dun"],
+      "preferred_roles": ["Counter_Attacker"],
+      "best_users": ["xiahou_dun"],
+      "score_bonus": 20,
+      "tag_activations": ["Counter_Damage_Boost"]
+    }
+  },
+  {
+    "id": "trait_zhuo_lie",
+    "name": "灼烈",
+    "slot": "Armor",
+    "exclusive_generals": [],
+    "priority_level": "S",
+    "description": "戰鬥首回合獲得反擊狀態（傷害率 100%）。",
+    "synergy_rules": {
+      "preferred_tactics": ["zan_bi_qi_feng", "fu_ji_jun_min"],
+      "preferred_roles": ["Tank"],
+      "best_users": ["cao_cao", "cheng_pu", "sun_jian"],
+      "score_bonus": 20,
+      "tag_activations": ["Early_Turn_Counter"]
+    }
+  },
+  {
+    "id": "trait_ling_dong",
+    "name": "靈動",
+    "slot": "Armor",
+    "exclusive_generals": [],
+    "priority_level": "S",
+    "description": "戰鬥首回合自身獲得 1 次抵禦（免疫傷害）。",
+    "synergy_rules": {
+      "preferred_roles": ["Glass_Cannon_Carry", "Fragile_Support"],
+      "best_users": ["sp_xunyu", "pang_tong", "zhang_jiao"],
+      "score_bonus": 15,
+      "tag_activations": ["Burst_Evasion"]
+    }
+  }
+]
