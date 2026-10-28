@@ -1,0 +1,108 @@
+{
+  "user_id": "player_default",
+  "inventory": {
+    "generals": [
+      {
+        "general_id": "sp_xunyu",
+        "rank": 3,
+        "level": 50,
+        "treasures": ["Shield_S"],
+        "is_locked": false,
+        "allocated_stats": {
+          "force": 0,
+          "intelligence": 30,
+          "command": 0,
+          "speed": 0
+        }
+      },
+      {
+        "general_id": "guan_yinping",
+        "rank": 5,
+        "level": 50,
+        "treasures": [],
+        "is_locked": false,
+        "allocated_stats": {
+          "force": 20,
+          "intelligence": 0,
+          "command": 0,
+          "speed": 30
+        }
+      },
+      {
+        "general_id": "zhang_jiao",
+        "rank": 4,
+        "level": 50,
+        "treasures": ["Bow_S"],
+        "is_locked": false,
+        "allocated_stats": {
+          "force": 0,
+          "intelligence": 40,
+          "command": 0,
+          "speed": 0
+        }
+      },
+      {
+        "general_id": "cao_cao",
+        "rank": 2,
+        "level": 50,
+        "treasures": [],
+        "is_locked": false,
+        "allocated_stats": {
+          "force": 0,
+          "intelligence": 20,
+          "command": 0,
+          "speed": 0
+        }
+      },
+      {
+        "general_id": "sima_yi",
+        "rank": 3,
+        "level": 50,
+        "treasures": [],
+        "is_locked": false,
+        "allocated_stats": {
+          "force": 0,
+          "intelligence": 30,
+          "command": 0,
+          "speed": 0
+        }
+      }
+    ],
+    "tactics": [
+      "cao_chuan_jie_jian",
+      "fu_ji_jun_min",
+      "zan_bi_qi_feng",
+      "gua_gu_liao_du",
+      "feng_shi_zhen",
+      "dang_feng_cui_jue",
+      "heng_sao_qian_jun",
+      "shi_bie_san_ri"
+    ],
+    "equipments": [
+      {
+        "equipment_id": "eq_01",
+        "name": "八寶夜明鎧",
+        "slot": "Armor",
+        "trait_id": "trait_yuan_hu"
+      },
+      {
+        "equipment_id": "eq_02",
+        "name": "赤兔",
+        "slot": "Horse",
+        "trait_id": "trait_cai_ta"
+      },
+      {
+        "equipment_id": "eq_03",
+        "name": "九節杖",
+        "slot": "Weapon",
+        "trait_id": "trait_tian_gong"
+      },
+      {
+        "equipment_id": "eq_04",
+        "name": "金絲軟甲",
+        "slot": "Armor",
+        "trait_id": "trait_ling_dong"
+      }
+    ]
+  }
+}
