@@ -1,0 +1,162 @@
+[
+  {
+    "id": "sp_xunyu",
+    "name": "SP荀彧",
+    "camp": "WEI",
+    "gender": "Male",
+    "cost": 7,
+    "base_aptitude": {
+      "Cavalry": "S",
+      "Shield": "B",
+      "Bow": "A",
+      "Spear": "C"
+    },
+    "base_stats": {
+      "force": 31.0,
+      "intelligence": 95.0,
+      "command": 87.0,
+      "speed": 52.0
+    },
+    "stat_growth": {
+      "force": 0.28,
+      "intelligence": 2.63,
+      "command": 1.86,
+      "speed": 0.74
+    },
+    "innate_tactic_id": "ji_ci_fang_ce",
+    "innate_tactic_type": "Command",
+    "tags": {
+      "role": ["Support", "Damage_Mitigation", "Control_Counter"],
+      "stat_scaling": ["intelligence"],
+      "mechanisms": ["警戒", "解控", "反擊控制"]
+    }
+  },
+  {
+    "id": "guan_yinping",
+    "name": "關銀屏",
+    "camp": "SHU",
+    "gender": "Female",
+    "cost": 6,
+    "base_aptitude": {
+      "Cavalry": "S",
+      "Shield": "B",
+      "Bow": "B",
+      "Spear": "S"
+    },
+    "base_stats": {
+      "force": 82.0,
+      "intelligence": 52.0,
+      "command": 81.0,
+      "speed": 66.0
+    },
+    "stat_growth": {
+      "force": 2.09,
+      "intelligence": 0.98,
+      "command": 1.45,
+      "speed": 1.21
+    },
+    "innate_tactic_id": "jiang_men_hu_nu",
+    "innate_tactic_type": "Active",
+    "tags": {
+      "role": ["Secondary_Damage", "Control_Initiator"],
+      "stat_scaling": ["force", "speed"],
+      "mechanisms": ["虎嗔", "震懾", "多段傷害需求"]
+    }
+  },
+  {
+    "id": "zhang_jiao",
+    "name": "張角",
+    "camp": "QUN",
+    "gender": "Male",
+    "cost": 7,
+    "base_aptitude": {
+      "Cavalry": "B",
+      "Shield": "S",
+      "Bow": "S",
+      "Spear": "B"
+    },
+    "base_stats": {
+      "force": 27.0,
+      "intelligence": 93.0,
+      "command": 84.0,
+      "speed": 38.0
+    },
+    "stat_growth": {
+      "force": 0.32,
+      "intelligence": 2.38,
+      "command": 1.77,
+      "speed": 0.58
+    },
+    "innate_tactic_id": "wu_lei_hong_ding",
+    "innate_tactic_type": "Active",
+    "tags": {
+      "role": ["Primary_Damage"],
+      "stat_scaling": ["intelligence"],
+      "mechanisms": ["多段打擊", "震懾", "天公質變"]
+    }
+  },
+  {
+    "id": "cao_cao",
+    "name": "曹操",
+    "camp": "WEI",
+    "gender": "Male",
+    "cost": 7,
+    "base_aptitude": {
+      "Cavalry": "S",
+      "Shield": "S",
+      "Bow": "A",
+      "Spear": "A"
+    },
+    "base_stats": {
+      "force": 72.0,
+      "intelligence": 91.0,
+      "command": 99.0,
+      "speed": 64.0
+    },
+    "stat_growth": {
+      "force": 1.33,
+      "intelligence": 1.94,
+      "command": 2.70,
+      "speed": 1.18
+    },
+    "innate_tactic_id": "luan_shi_jian_xiong",
+    "innate_tactic_type": "Command",
+    "tags": {
+      "role": ["Core_Support", "Tank"],
+      "stat_scaling": ["command", "intelligence"],
+      "mechanisms": ["全隊增傷", "自身免傷", "援護適配"]
+    }
+  },
+  {
+    "id": "sima_yi",
+    "name": "司馬懿",
+    "camp": "WEI",
+    "gender": "Male",
+    "cost": 7,
+    "base_aptitude": {
+      "Cavalry": "A",
+      "Shield": "S",
+      "Bow": "A",
+      "Spear": "S"
+    },
+    "base_stats": {
+      "force": 64.0,
+      "intelligence": 98.0,
+      "command": 98.0,
+      "speed": 41.0
+    },
+    "stat_growth": {
+      "force": 0.81,
+      "intelligence": 2.67,
+      "command": 2.06,
+      "speed": 0.65
+    },
+    "innate_tactic_id": "ying_lang_gu_she",
+    "innate_tactic_type": "Command",
+    "tags": {
+      "role": ["Late_Game_Carry"],
+      "stat_scaling": ["intelligence"],
+      "mechanisms": ["後四回合爆發", "奇謀", "指揮輸出"]
+    }
+  }
+]
