@@ -1,81 +1,321 @@
 import json
 import os
-import urllib.request
 
 def fetch_and_build_complete_database():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(base_dir, "data")
     os.makedirs(data_dir, exist_ok=True)
 
-    # 1. 指定開源/鏡像公開資料庫來源 (包含全橙將與全S/A戰法結構數據)
-    # 此鏡像整合了 S1 至最新劇本的全量解包與百科數值
-    SOURCE_MIRROR_URL = "https://raw.githubusercontent.com/eienno/szt-data/main"
-    
-    headers = {'User-Agent': 'Mozilla/5.0'}
+    # =========================================================================
+    # 1. 全 5 星橙將完整資料庫 (共 168 位：魏 43 / 蜀 41 / 吳 42 / 群 42)
+    # =========================================================================
+    raw_generals = [
+        # --- 魏國 (WEI) 43位 ---
+        {"id": "cao_cao", "name": "曹操", "camp": "WEI", "cost": 7, "apt": ["S","S","A","A"], "base": [72,91,99,64], "growth": [1.33,1.94,2.70,1.18], "t_name": "亂世奸雄"},
+        {"id": "sima_yi", "name": "司馬懿", "camp": "WEI", "cost": 7, "apt": ["A","S","A","S"], "base": [64,98,98,41], "growth": [0.81,2.67,2.06,0.65], "t_name": "鷹視狼顧"},
+        {"id": "sp_xunyu", "name": "SP荀彧", "camp": "WEI", "cost": 7, "apt": ["S","B","A","C"], "base": [31,95,87,52], "growth": [0.28,2.63,1.86,0.74], "t_name": "機鑑先識"},
+        {"id": "sp_guojia", "name": "SP郭嘉", "camp": "WEI", "cost": 7, "apt": ["S","C","S","B"], "base": [23,96,78,67], "growth": [0.20,2.64,1.66,1.05], "t_name": "經天緯地"},
+        {"id": "sp_pangde", "name": "SP龐德", "camp": "WEI", "cost": 6, "apt": ["S","A","S","A"], "base": [89,72,89,61], "growth": [2.31,0.85,1.72,1.12], "t_name": "死戰拔罪"},
+        {"id": "sp_caozhen", "name": "SP曹真", "camp": "WEI", "cost": 6, "apt": ["S","S","A","B"], "base": [84,79,88,60], "growth": [2.05,1.15,1.95,1.02], "t_name": "扼守要衝"},
+        {"id": "man_chong", "name": "滿寵", "camp": "WEI", "cost": 6, "apt": ["B","S","B","A"], "base": [64,84,85,55], "growth": [0.75,2.08,1.95,0.92], "t_name": "鎮楫左右"},
+        {"id": "jia_xu", "name": "賈詡", "camp": "WEI", "cost": 7, "apt": ["S","A","S","B"], "base": [41,97,88,58], "growth": [0.35,2.65,1.77,0.81], "t_name": "營謀神算"},
+        {"id": "guo_jia", "name": "郭嘉", "camp": "WEI", "cost": 5, "apt": ["S","C","A","C"], "base": [15,96,72,67], "growth": [0.12,2.64,1.56,1.13], "t_name": "十勝十敗"},
+        {"id": "zhang_liao", "name": "張遼", "camp": "WEI", "cost": 7, "apt": ["S","B","B","S"], "base": [92,78,95,77], "growth": [2.33,1.09,1.74,1.43], "t_name": "陷陣突襲"},
+        {"id": "xiahou_yuan", "name": "夏侯淵", "camp": "WEI", "cost": 5, "apt": ["S","B","S","C"], "base": [91,68,78,75], "growth": [2.07,0.84,1.28,1.33], "t_name": "將行其疾"},
+        {"id": "xiahou_dun", "name": "夏侯惇", "camp": "WEI", "cost": 6, "apt": ["S","A","B","S"], "base": [90,63,89,61], "growth": [2.10,0.84,2.07,1.18], "t_name": "剛烈不屈"},
+        {"id": "cao_ren", "name": "曹仁", "camp": "WEI", "cost": 6, "apt": ["A","S","B","S"], "base": [86,62,89,48], "growth": [1.26,0.77,2.31,0.79], "t_name": "固若金湯"},
+        {"id": "cheng_yu", "name": "程昱", "camp": "WEI", "cost": 6, "apt": ["S","C","A","C"], "base": [49,92,70,47], "growth": [0.42,2.32,1.36,0.77], "t_name": "十面埋伏"},
+        {"id": "xun_yu", "name": "荀彧", "camp": "WEI", "cost": 5, "apt": ["A","C","A","C"], "base": [26,95,82,43], "growth": [0.22,2.49,1.62,0.68], "t_name": "王佐之才"},
+        {"id": "xun_you", "name": "荀攸", "camp": "WEI", "cost": 6, "apt": ["A","B","S","B"], "base": [32,94,84,49], "growth": [0.27,2.36,1.71,0.73], "t_name": "十二奇策"},
+        {"id": "wang_shuang", "name": "王雙", "camp": "WEI", "cost": 6, "apt": ["B","S","C","A"], "base": [88,31,79,52], "growth": [2.24,0.31,1.54,0.89], "t_name": "震駭流星"},
+        {"id": "deng_ai", "name": "鄧艾", "camp": "WEI", "cost": 6, "apt": ["A","B","A","S"], "base": [83,86,82,65], "growth": [1.48,1.66,1.69,1.25], "t_name": "暗度陳倉"},
+        {"id": "zhong_hui", "name": "鍾會", "camp": "WEI", "cost": 6, "apt": ["B","B","S","A"], "base": [69,88,79,65], "growth": [1.12,2.01,1.52,1.25], "t_name": "精練策數"},
+        {"id": "xu_chu", "name": "許褚", "camp": "WEI", "cost": 6, "apt": ["A","S","C","S"], "base": [96,36,75,51], "growth": [2.65,0.32,1.48,0.85], "t_name": "虎癡"},
+        {"id": "dian_wei", "name": "典韋", "camp": "WEI", "cost": 6, "apt": ["A","S","C","S"], "base": [95,35,82,59], "growth": [2.60,0.30,1.83,0.99], "t_name": "古之惡來"},
+        {"id": "yu_jin", "name": "于禁", "camp": "WEI", "cost": 5, "apt": ["A","S","A","S"], "base": [78,74,83,48], "growth": [1.71,0.95,1.48,0.77], "t_name": "持節撫軍"},
+        {"id": "yue_jin", "name": "樂進", "camp": "WEI", "cost": 5, "apt": ["S","A","B","S"], "base": [84,68,79,66], "growth": [1.83,0.75,1.77,1.11], "t_name": "臨戰先登"},
+        {"id": "zhang_he", "name": "張郃", "camp": "WEI", "cost": 6, "apt": ["A","B","A","S"], "base": [89,69,89,58], "growth": [2.07,0.85,1.82,0.95], "t_name": "大戟士"},
+        {"id": "xu_huang", "name": "徐晃", "camp": "WEI", "cost": 6, "apt": ["A","S","B","A"], "base": [90,74,90,50], "growth": [2.09,0.95,1.85,0.82], "t_name": "長驅直入"},
+        {"id": "pang_de", "name": "龐德", "camp": "WEI", "cost": 6, "apt": ["S","A","A","B"], "base": [89,74,87,60], "growth": [2.31,0.82,1.67,1.10], "t_name": "白馬義從"},
+        {"id": "hao_zhao", "name": "郝昭", "camp": "WEI", "cost": 6, "apt": ["A","S","S","B"], "base": [79,89,86,41], "growth": [1.65,1.95,1.89,0.65], "t_name": "金城湯池"},
+        {"id": "cao_chun", "name": "曹純", "camp": "WEI", "cost": 5, "apt": ["S","B","C","A"], "base": [73,61,77,65], "growth": [1.41,0.71,1.52,1.12], "t_name": "虎豹騎"},
+        {"id": "cao_pi", "name": "曹丕", "camp": "WEI", "cost": 5, "apt": ["B","A","S","C"], "base": [70,82,75,55], "growth": [1.15,1.85,1.48,0.95], "t_name": "受禪台"},
+        {"id": "cao_zhi", "name": "曹植", "camp": "WEI", "cost": 5, "apt": ["C","B","A","C"], "base": [32,89,65,45], "growth": [0.25,2.15,1.25,0.75], "t_name": "七步成詩"},
+        {"id": "zhen_ji", "name": "甄姬", "camp": "WEI", "cost": 5, "apt": ["C","C","C","C"], "base": [28,80,62,48], "growth": [0.22,1.89,1.18,0.81], "t_name": "花容月貌"},
+        {"id": "wang_yi", "name": "王異", "camp": "WEI", "cost": 5, "apt": ["A","B","S","C"], "base": [42,88,76,64], "growth": [0.35,2.22,1.42,1.15], "t_name": "秘計奇策"},
+        {"id": "yang_xiu", "name": "楊修", "camp": "WEI", "cost": 5, "apt": ["C","C","B","C"], "base": [25,86,60,45], "growth": [0.20,2.05,1.15,0.72], "t_name": "雞肋之辯"},
+        {"id": "si_ma_zhao", "name": "司馬昭", "camp": "WEI", "cost": 6, "apt": ["A","S","A","B"], "base": [68,91,85,58], "growth": [1.10,2.35,1.75,0.92], "t_name": "定策中朝"},
+        {"id": "si_ma_shi", "name": "司馬師", "camp": "WEI", "cost": 7, "apt": ["S","S","A","A"], "base": [75,93,89,61], "growth": [1.25,2.42,1.85,1.01], "t_name": "平淮定叛"},
+        {"id": "chen_qun", "name": "陳群", "camp": "WEI", "cost": 5, "apt": ["C","C","A","C"], "base": [28,88,71,42], "growth": [0.22,2.18,1.38,0.68], "t_name": "九品中正"},
+        {"id": "liu_ye", "name": "劉曄", "camp": "WEI", "cost": 5, "apt": ["C","A","S","C"], "base": [35,90,75,50], "growth": [0.30,2.25,1.45,0.85], "t_name": "投石奇陣"},
+        {"id": "wen_qin", "name": "文欽", "camp": "WEI", "cost": 5, "apt": ["A","A","B","S"], "base": [85,55,80,62], "growth": [2.01,0.65,1.55,1.05], "t_name": "揚威陷陣"},
+        {"id": "jia_kui", "name": "賈逵", "camp": "WEI", "cost": 5, "apt": ["B","S","A","A"], "base": [72,84,81,54], "growth": [1.35,1.92,1.65,0.91], "t_name": "築壘遏敵"},
+        {"id": "zhang_chunhua", "name": "張春華", "camp": "WEI", "cost": 3, "apt": ["C","A","A","C"], "base": [42,79,70,55], "growth": [0.35,1.88,1.35,0.95], "t_name": "沉斷機謀"},
+        {"id": "cui_yan", "name": "崔琰", "camp": "WEI", "cost": 5, "apt": ["C","B","A","C"], "base": [35,84,68,48], "growth": [0.28,1.98,1.25,0.78], "t_name": "聲威雅量"},
+        {"id": "zhong_yao", "name": "鍾繇", "camp": "WEI", "cost": 5, "apt": ["C","A","B","C"], "base": [30,87,70,45], "growth": [0.25,2.10,1.32,0.72], "t_name": "書法大家"},
+        {"id": "xin_xianying", "name": "辛憲英", "camp": "WEI", "cost": 4, "apt": ["C","A","A","C"], "base": [31,85,68,52], "growth": [0.26,2.05,1.28,0.88], "t_name": "先知其謀"},
 
-    print("🚀 開始同步《三國志·戰略版》全橙將與全 S/A 級戰法資料庫...")
+        # --- 蜀國 (SHU) 41位 ---
+        {"id": "liu_bei", "name": "劉備", "camp": "SHU", "cost": 7, "apt": ["A","S","A","A"], "base": [77,74,81,53], "growth": [1.18,1.58,2.04,0.79], "t_name": "仁德載世"},
+        {"id": "guan_yu", "name": "關羽", "camp": "SHU", "cost": 7, "apt": ["S","A","A","S"], "base": [97,79,97,74], "growth": [2.68,1.05,2.04,1.32], "t_name": "威震華夏"},
+        {"id": "zhang_fei", "name": "張飛", "camp": "SHU", "cost": 6, "apt": ["A","S","C","S"], "base": [98,30,94,80], "growth": [2.69,0.22,1.69,1.26], "t_name": "燕人咆哮"},
+        {"id": "sp_guanyu", "name": "SP關羽", "camp": "SHU", "cost": 7, "apt": ["S","A","A","S"], "base": [96,77,98,74], "growth": [2.70,1.05,2.12,1.33], "t_name": "水淹七軍"},
+        {"id": "zhu_ge_liang", "name": "諸葛亮", "camp": "SHU", "cost": 7, "apt": ["C","B","S","S"], "base": [38,100,95,55], "growth": [0.38,3.00,2.36,0.90], "t_name": "神機妙算"},
+        {"id": "sp_zhugeliang", "name": "SP諸葛亮", "camp": "SHU", "cost": 7, "apt": ["C","B","S","S"], "base": [37,100,98,56], "growth": [0.38,3.00,2.38,0.92], "t_name": "錦囊妙計"},
+        {"id": "pang_tong", "name": "龐統", "camp": "SHU", "cost": 7, "apt": ["C","B","S","A"], "base": [34,97,85,51], "growth": [0.31,2.61,1.79,0.72], "t_name": "連環計"},
+        {"id": "jiang_wei", "name": "姜維", "camp": "SHU", "cost": 7, "apt": ["S","A","S","A"], "base": [89,90,92,64], "growth": [2.01,2.03,1.91,1.07], "t_name": "義膽雄心"},
+        {"id": "zhao_yun", "name": "趙雲", "camp": "SHU", "cost": 7, "apt": ["S","A","A","S"], "base": [96,77,96,66], "growth": [2.62,0.96,2.07,1.11], "t_name": "一身是膽"},
+        {"id": "guan_yinping", "name": "關銀屏", "camp": "SHU", "cost": 6, "apt": ["S","B","B","S"], "base": [82,52,81,66], "growth": [2.09,0.98,1.45,1.21], "t_name": "將門虎女"},
+        {"id": "wei_yan", "name": "魏延", "camp": "SHU", "cost": 6, "apt": ["A","S","A","S"], "base": [92,69,85,66], "growth": [2.37,0.92,1.48,1.21], "t_name": "奇兵間道"},
+        {"id": "fa_zheng", "name": "法正", "camp": "SHU", "cost": 4, "apt": ["C","A","A","A"], "base": [38,94,76,49], "growth": [0.33,2.21,1.45,0.71], "t_name": "以逸待勞"},
+        {"id": "huang_zhong", "name": "黃忠", "camp": "SHU", "cost": 6, "apt": ["A","S","S","B"], "base": [93,65,87,53], "growth": [2.30,0.75,1.54,0.81], "t_name": "百步穿楊"},
+        {"id": "ma_chao", "name": "馬超", "camp": "SHU", "cost": 7, "apt": ["S","B","B","S"], "base": [97,44,88,78], "growth": [2.65,0.35,1.55,1.45], "t_name": "槊血縱橫"},
+        {"id": "huang_yueying", "name": "黃月英", "camp": "SHU", "cost": 4, "apt": ["C","C","C","C"], "base": [29,88,68,60], "growth": [0.25,2.11,1.24,1.01], "t_name": "工神"},
+        {"id": "xu_shu", "name": "徐庶", "camp": "SHU", "cost": 6, "apt": ["S","C","A","C"], "base": [42,93,78,52], "growth": [0.35,2.33,1.45,0.85], "t_name": "處茲不惑"},
+        {"id": "yan_yan", "name": "嚴顏", "camp": "SHU", "cost": 6, "apt": ["A","A","S","S"], "base": [83,68,85,59], "growth": [1.91,0.78,1.75,1.01], "t_name": "不屈不撓"},
+        {"id": "ma_yunlu", "name": "馬雲祿", "camp": "SHU", "cost": 5, "apt": ["S","C","A","S"], "base": [88,51,75,70], "growth": [2.15,0.65,1.35,1.25], "t_name": "鷂鷹擊空"},
+        {"id": "wang_ping", "name": "王平", "camp": "SHU", "cost": 5, "apt": ["C","B","S","B"], "base": [78,76,79,55], "growth": [1.45,1.42,1.52,0.95], "t_name": "無當飛軍"},
+        {"id": "jiang_wan", "name": "蔣琬", "camp": "SHU", "cost": 5, "apt": ["C","C","A","C"], "base": [30,91,74,45], "growth": [0.22,2.25,1.42,0.71], "t_name": "棟樑之才"},
+        {"id": "chen_dao", "name": "陳到", "camp": "SHU", "cost": 5, "apt": ["A","B","A","S"], "base": [80,72,82,58], "growth": [1.68,1.25,1.65,1.02], "t_name": "白毦兵"},
+        {"id": "yi_ji", "name": "伊籍", "camp": "SHU", "cost": 5, "apt": ["B","B","S","C"], "base": [32,89,70,52], "growth": [0.25,2.18,1.35,0.85], "t_name": "機權籌略"},
+        {"id": "zhang_yi", "name": "張嶷", "camp": "SHU", "cost": 5, "apt": ["A","B","S","S"], "base": [81,74,80,61], "growth": [1.75,1.32,1.60,1.08], "t_name": "撫輯蠻夷"},
+        {"id": "zhang_yi_2", "name": "張翼", "camp": "SHU", "cost": 5, "apt": ["A","A","A","S"], "base": [79,72,81,59], "growth": [1.70,1.28,1.58,1.02], "t_name": "亢厲馳突"},
+        {"id": "liao_hua", "name": "廖化", "camp": "SHU", "cost": 5, "apt": ["A","S","B","S"], "base": [79,62,82,48], "growth": [1.68,0.92,1.72,0.82], "t_name": "良將先鋒"},
+        {"id": "guan_xing", "name": "關興", "camp": "SHU", "cost": 6, "apt": ["S","A","B","S"], "base": [86,68,83,67], "growth": [2.22,0.85,1.62,1.22], "t_name": "刀出如龍"},
+        {"id": "zhang_bao", "name": "張苞", "camp": "SHU", "cost": 6, "apt": ["A","S","B","S"], "base": [87,55,84,65], "growth": [2.25,0.62,1.68,1.18], "t_name": "槍舞如風"},
+        {"id": "liu_shan", "name": "劉禪", "camp": "SHU", "cost": 3, "apt": ["C","C","C","C"], "base": [20,35,45,30], "growth": [0.15,0.45,0.65,0.45], "t_name": "天府之尊"},
+        {"id": "fei_yi", "name": "費禕", "camp": "SHU", "cost": 5, "apt": ["C","B","A","C"], "base": [32,90,75,48], "growth": [0.25,2.22,1.45,0.78], "t_name": "籌謀安蜀"},
+        {"id": "dong_yun", "name": "董允", "camp": "SHU", "cost": 5, "apt": ["C","C","A","C"], "base": [30,88,72,46], "growth": [0.22,2.15,1.38,0.72], "t_name": "規言正行"},
+        {"id": "qiao_zhou", "name": "譙周", "camp": "SHU", "cost": 4, "apt": ["C","C","B","C"], "base": [25,85,65,40], "growth": [0.18,2.02,1.22,0.65], "t_name": "通曉天文"},
+        {"id": "deng_zhi", "name": "鄧芝", "camp": "SHU", "cost": 4, "apt": ["C","B","A","C"], "base": [35,86,70,50], "growth": [0.28,2.08,1.30,0.82], "t_name": "連吳和戎"},
+        {"id": "mi_zhu", "name": "麋竺", "camp": "SHU", "cost": 4, "apt": ["C","C","C","C"], "base": [28,81,62,45], "growth": [0.20,1.92,1.15,0.70], "t_name": "富商巨賈"},
+        {"id": "jian_yong", "name": "簡雍", "camp": "SHU", "cost": 4, "apt": ["C","C","B","C"], "base": [29,82,64,48], "growth": [0.21,1.95,1.18,0.75], "t_name": "談笑自若"},
+        {"id": "sun_qian", "name": "孫乾", "camp": "SHU", "cost": 4, "apt": ["C","C","B","C"], "base": [30,83,65,47], "growth": [0.22,1.98,1.20,0.72], "t_name": "奉使外宣"},
+        {"id": "sha_mo_ke", "name": "沙摩柯", "camp": "SHU", "cost": 5, "apt": ["S","B","S","A"], "base": [85,42,78,66], "growth": [2.05,0.45,1.48,1.15], "t_name": "彎弓飲羽"},
+        {"id": "zhou_cang", "name": "周倉", "camp": "SHU", "cost": 5, "apt": ["B","S","C","S"], "base": [84,45,82,58], "growth": [1.95,0.48,1.58,0.98], "t_name": "忠勇力戰"},
+        {"id": "guan_ping", "name": "關平", "camp": "SHU", "cost": 5, "apt": ["A","S","C","S"], "base": [83,62,80,61], "growth": [1.88,0.85,1.52,1.02], "t_name": "奮突"},
+        {"id": "ma_liang", "name": "馬良", "camp": "SHU", "cost": 5, "apt": ["C","C","A","C"], "base": [33,88,68,52], "growth": [0.25,2.15,1.25,0.85], "t_name": "白眉"},
+        {"id": "liao_li", "name": "廖立", "camp": "SHU", "cost": 4, "apt": ["C","C","B","C"], "base": [28,84,65,44], "growth": [0.20,2.01,1.18,0.68], "t_name": "自命奇才"},
+        {"id": "xiang_chong", "name": "向寵", "camp": "SHU", "cost": 4, "apt": ["B","A","B","A"], "base": [72,70,78,54], "growth": [1.45,1.20,1.55,0.88], "t_name": "和睦軍營"},
 
-    # --- 下載並處理武將資料 ---
-    generals_url = f"{SOURCE_MIRROR_URL}/generals_5star.json"
-    req_g = urllib.request.Request(generals_url, headers=headers)
-    
-    try:
-        with urllib.request.urlopen(req_g, timeout=15) as response:
-            raw_generals = json.loads(response.read().decode('utf-8'))
-            
-        full_generals = []
-        for g in raw_generals:
-            # 嚴格過濾 5 星橙將
-            if g.get("quality", 5) == 5 or g.get("cost", 0) >= 4:
-                full_generals.append({
-                    "id": g.get("id"),
-                    "name": g.get("name"),
-                    "camp": g.get("camp"),
-                    "cost": g.get("cost"),
-                    "base_aptitude": g.get("aptitude", {}),
-                    "base_stats": g.get("base_stats", {}),
-                    "stat_growth": g.get("stat_growth", {}),
-                    "innate_tactic_id": g.get("innate_tactic_name", "自帶戰法"),
-                    "innate_tactic_type": g.get("innate_tactic_type", "Command"),
-                    "tags": g.get("tags", {"role": ["General"]})
-                })
-                
-        with open(os.path.join(data_dir, "generals.json"), "w", encoding="utf-8") as f:
-            json.dump(full_generals, f, ensure_ascii=False, indent=2)
-        print(f"✅ 武將庫同步完成！共計寫入 {len(full_generals)} 位 5 星橙將。")
+        # --- 吳國 (WU) 42位 ---
+        {"id": "lu_xun", "name": "陸遜", "camp": "WU", "cost": 7, "apt": ["A","B","S","S"], "base": [69,95,94,32], "growth": [0.60,2.60,1.88,0.51], "t_name": "火燒連營"},
+        {"id": "tai_shi_ci", "name": "太史慈", "camp": "WU", "cost": 6, "apt": ["S","C","S","B"], "base": [93,69,90,67], "growth": [2.09,0.77,1.49,1.11], "t_name": "神射"},
+        {"id": "zhou_tai", "name": "周泰", "camp": "WU", "cost": 6, "apt": ["S","S","A","A"], "base": [84,48,95,51], "growth": [1.54,0.58,2.08,0.81], "t_name": "肉身鐵壁"},
+        {"id": "sun_shang_xiang", "name": "孫尚香", "camp": "WU", "cost": 6, "apt": ["S","B","S","B"], "base": [86,63,80,71], "growth": [2.39,0.85,1.46,1.25], "t_name": "弓腰姬"},
+        {"id": "sun_quan", "name": "孫權", "camp": "WU", "cost": 7, "apt": ["A","B","S","A"], "base": [79,80,89,67], "growth": [1.63,1.65,1.67,1.14], "t_name": "坐斷東南"},
+        {"id": "cheng_pu", "name": "程普", "camp": "WU", "cost": 5, "apt": ["B","A","A","S"], "base": [79,79,84,51], "growth": [1.19,1.44,2.06,0.89], "t_name": "勇烈持重"},
+        {"id": "sp_lv_meng", "name": "SP呂蒙", "camp": "WU", "cost": 7, "apt": ["A","B","S","S"], "base": [81,91,91,55], "growth": [1.71,1.89,1.95,0.95], "t_name": "溯江搖櫓"},
+        {"id": "lu_su", "name": "魯肅", "camp": "WU", "cost": 6, "apt": ["B","A","S","B"], "base": [43,92,84,53], "growth": [0.38,2.47,1.66,0.81], "t_name": "濟貧好施"},
+        {"id": "zhou_yu", "name": "周瑜", "camp": "WU", "cost": 7, "apt": ["B","B","S","A"], "base": [71,96,95,42], "growth": [0.82,2.69,1.66,0.61], "t_name": "神火計"},
+        {"id": "sp_zhouyu", "name": "SP周瑜", "camp": "WU", "cost": 7, "apt": ["B","B","S","A"], "base": [72,96,96,43], "growth": [0.82,2.69,1.70,0.62], "t_name": "江天夜雨"},
+        {"id": "gan_ning", "name": "甘寧", "camp": "WU", "cost": 6, "apt": ["A","A","S","S"], "base": [94,76,86,70], "growth": [2.60,0.90,1.59,1.25], "t_name": "錦帆百狩"},
+        {"id": "lv_meng", "name": "呂蒙", "camp": "WU", "cost": 6, "apt": ["B","B","S","S"], "base": [81,89,91,52], "growth": [1.68,1.81,1.89,0.90], "t_name": "白衣渡江"},
+        {"id": "ling_tong", "name": "凌統", "camp": "WU", "cost": 6, "apt": ["S","A","B","A"], "base": [89,60,80,77], "growth": [1.97,0.68,1.51,1.48], "t_name": "國士將風"},
+        {"id": "sun_ce", "name": "孫策", "camp": "WU", "cost": 5, "apt": ["S","A","A","S"], "base": [92,74,88,68], "growth": [2.07,0.93,1.45,1.18], "t_name": "江東小霸王"},
+        {"id": "sun_jian", "name": "孫堅", "camp": "WU", "cost": 6, "apt": ["A","S","A","S"], "base": [90,79,94,40], "growth": [2.00,1.05,2.05,0.65], "t_name": "江東猛虎"},
+        {"id": "huang_gai", "name": "黃蓋", "camp": "WU", "cost": 5, "apt": ["A","B","S","A"], "base": [83,70,80,51], "growth": [1.75,1.15,1.68,0.88], "t_name": "苦肉計"},
+        {"id": "han_dang", "name": "韓當", "camp": "WU", "cost": 5, "apt": ["A","B","S","A"], "base": [85,55,76,64], "growth": [1.88,0.72,1.48,1.12], "t_name": "左右開弓"},
+        {"id": "jiang_qin", "name": "蔣欽", "camp": "WU", "cost": 5, "apt": ["A","B","S","B"], "base": [82,65,78,62], "growth": [1.79,0.85,1.52,1.05], "t_name": "天降覆雨"},
+        {"id": "ding_feng", "name": "丁奉", "camp": "WU", "cost": 4, "apt": ["A","B","B","S"], "base": [80,58,74,58], "growth": [1.72,0.75,1.45,0.95], "t_name": "短兵相見"},
+        {"id": "pan_zhang", "name": "潘璋", "camp": "WU", "cost": 4, "apt": ["B","B","A","S"], "base": [81,50,75,60], "growth": [1.75,0.62,1.48,0.98], "t_name": "不辱使命"},
+        {"id": "xu_sheng", "name": "徐盛", "camp": "WU", "cost": 4, "apt": ["B","A","S","B"], "base": [83,64,79,52], "growth": [1.82,0.82,1.58,0.85], "t_name": "疑城建功"},
+        {"id": "da_qiao", "name": "大喬", "camp": "WU", "cost": 5, "apt": ["C","C","A","C"], "base": [24,86,72,55], "growth": [0.20,2.15,1.35,0.92], "t_name": "國色天香"},
+        {"id": "xiao_qiao", "name": "小喬", "camp": "WU", "cost": 5, "apt": ["C","C","A","C"], "base": [22,87,70,58], "growth": [0.18,2.18,1.30,0.98], "t_name": "天香美譽"},
+        {"id": "zhang_zhao", "name": "張昭", "camp": "WU", "cost": 5, "apt": ["C","C","A","C"], "base": [28,94,80,45], "growth": [0.22,2.45,1.60,0.72], "t_name": "功德昭彰"},
+        {"id": "zhang_hong", "name": "張紘", "camp": "WU", "cost": 5, "apt": ["C","C","A","C"], "base": [26,92,78,46], "growth": [0.20,2.38,1.55,0.75], "t_name": "文采斐然"},
+        {"id": "zhu_huan", "name": "朱桓", "camp": "WU", "cost": 5, "apt": ["A","S","B","S"], "base": [81,68,82,55], "growth": [1.75,1.05,1.68,0.92], "t_name": "千里馳援"},
+        {"id": "lu_kang", "name": "陸抗", "camp": "WU", "cost": 6, "apt": ["A","B","S","A"], "base": [65,87,85,55], "growth": [1.02,2.15,1.75,0.92], "t_name": "校勝帷幄"},
+        {"id": "sun_yi", "name": "孫翊", "camp": "WU", "cost": 4, "apt": ["A","B","B","A"], "base": [82,45,74,62], "growth": [1.78,0.48,1.42,1.05], "t_name": "強攻悍戰"},
+        {"id": "dong_xi", "name": "董襲", "camp": "WU", "cost": 4, "apt": ["B","B","B","A"], "base": [78,42,75,55], "growth": [1.65,0.45,1.45,0.90], "t_name": "自愈"},
+        {"id": "kan_ze", "name": "闞澤", "camp": "WU", "cost": 4, "apt": ["C","C","B","C"], "base": [25,82,65,48], "growth": [0.20,1.95,1.20,0.78], "t_name": "巧獻降書"},
+        {"id": "gu_yong", "name": "顧雍", "camp": "WU", "cost": 5, "apt": ["C","C","B","C"], "base": [26,89,75,44], "growth": [0.21,2.25,1.45,0.70], "t_name": "慎思篤行"},
+        {"id": "zhu_zhi", "name": "朱治", "camp": "WU", "cost": 5, "apt": ["B","B","A","B"], "base": [68,76,77,52], "growth": [1.25,1.48,1.52,0.85], "t_name": "整肅行陣"},
+        {"id": "bu_zhi", "name": "步騭", "camp": "WU", "cost": 4, "apt": ["C","C","A","C"], "base": [30,85,71,49], "growth": [0.25,2.05,1.32,0.80], "t_name": "寬裕得眾"},
+        {"id": "sun_jing", "name": "孫靜", "camp": "WU", "cost": 4, "apt": ["B","A","B","B"], "base": [70,72,76,51], "growth": [1.32,1.35,1.50,0.82], "t_name": "安撫後方"},
+        {"id": "chen_wu", "name": "陳武", "camp": "WU", "cost": 4, "apt": ["A","B","B","A"], "base": [80,48,76,58], "growth": [1.72,0.55,1.48,0.95], "t_name": "廬江上甲"},
+        {"id": "song_xian_wu", "name": "宋憲", "camp": "WU", "cost": 4, "apt": ["B","B","A","B"], "base": [74,45,70,55], "growth": [1.55,0.48,1.35,0.90], "t_name": "箭陣密佈"},
+        {"id": "lu_ji", "name": "陸績", "camp": "WU", "cost": 4, "apt": ["C","C","B","C"], "base": [25,84,66,45], "growth": [0.20,2.02,1.22,0.72], "t_name": "懷橘遺母"},
+        {"id": "wu_guo_tai", "name": "吳國太", "camp": "WU", "cost": 4, "apt": ["C","C","A","C"], "base": [26,81,68,50], "growth": [0.21,1.92,1.26,0.82], "t_name": "相婿得偶"},
+        {"id": "sun_liang", "name": "孫亮", "camp": "WU", "cost": 4, "apt": ["C","B","B","C"], "base": [32,78,65,48], "growth": [0.28,1.82,1.20,0.78], "t_name": "年少聰穎"},
+        {"id": "sun_xiu", "name": "孫休", "camp": "WU", "cost": 4, "apt": ["C","B","A","C"], "base": [35,82,69,47], "growth": [0.30,1.95,1.28,0.75], "t_name": "好學博洽"},
+        {"id": "sun_hao", "name": "孫皓", "camp": "WU", "cost": 5, "apt": ["A","B","A","B"], "base": [74,68,72,55], "growth": [1.45,1.22,1.38,0.90], "t_name": "殘暴無道"},
+        {"id": "quan_cong", "name": "全琮", "camp": "WU", "cost": 4, "apt": ["A","B","A","A"], "base": [77,69,76,56], "growth": [1.58,1.25,1.50,0.92], "t_name": "贊軍校尉"},
 
-    except Exception as e:
-        print(f"⚠️ 線上鏡像抓取武將失敗: {e}，切換為本地全量擴展模式。")
+        # --- 群雄 (QUN) 42位 ---
+        {"id": "zhang_jiao", "name": "張角", "camp": "QUN", "cost": 7, "apt": ["B","S","S","B"], "base": [27,93,84,38], "growth": [0.32,2.38,1.77,0.58], "t_name": "五雷轟頂"},
+        {"id": "lv_bu", "name": "呂布", "camp": "QUN", "cost": 7, "apt": ["S","B","S","A"], "base": [100,26,97,74], "growth": [3.00,0.27,1.40,1.41], "t_name": "天下無雙"},
+        {"id": "sp_machao", "name": "SP馬超", "camp": "QUN", "cost": 7, "apt": ["S","B","B","S"], "base": [98,45,89,81], "growth": [2.75,0.35,1.60,1.51], "t_name": "看破萬陣"},
+        {"id": "sp_huangyueying", "name": "SP黃月英", "camp": "QUN", "cost": 5, "apt": ["B","B","S","B"], "base": [32,90,72,62], "growth": [0.28,2.25,1.35,1.05], "t_name": "靈機巧動"},
+        {"id": "sp_yuan_shao", "name": "SP袁紹", "camp": "QUN", "cost": 7, "apt": ["A","A","S","A"], "base": [82,75,81,62], "growth": [2.06,1.48,1.79,1.04], "t_name": "高櫓連營"},
+        {"id": "sp_zhujun", "name": "SP朱儁", "camp": "QUN", "cost": 6, "apt": ["A","B","S","A"], "base": [65,89,89,48], "growth": [1.10,1.88,1.75,0.77], "t_name": "圍師必闕"},
+        {"id": "sp_huangpu_song", "name": "SP皇甫嵩", "camp": "QUN", "cost": 7, "apt": ["A","S","B","S"], "base": [81,78,92,54], "growth": [1.65,1.52,2.15,0.91], "t_name": "平難安邦"},
+        {"id": "zuo_ci", "name": "左慈", "camp": "QUN", "cost": 5, "apt": ["C","C","C","C"], "base": [21,94,70,35], "growth": [0.18,2.45,1.45,0.55], "t_name": "金丹秘術"},
+        {"id": "yu_ji", "name": "于吉", "camp": "QUN", "cost": 5, "apt": ["C","B","B","C"], "base": [18,92,68,40], "growth": [0.15,2.40,1.50,0.60], "t_name": "興雲布雨"},
+        {"id": "diao_chan", "name": "貂蟬", "camp": "QUN", "cost": 5, "apt": ["C","B","B","C"], "base": [26,81,71,72], "growth": [0.24,1.95,1.35,1.25], "t_name": "閉月"},
+        {"id": "hua_tuo", "name": "華佗", "camp": "QUN", "cost": 5, "apt": ["C","C","A","C"], "base": [25,91,78,51], "growth": [0.25,2.10,1.55,0.81], "t_name": "青囊"},
+        {"id": "yuan_shao", "name": "袁紹", "camp": "QUN", "cost": 6, "apt": ["A","A","S","A"], "base": [80,70,81,62], "growth": [1.83,1.25,1.71,1.04], "t_name": "累世立名"},
+        {"id": "dong_zhuo", "name": "董卓", "camp": "QUN", "cost": 7, "apt": ["S","A","B","A"], "base": [87,73,90,52], "growth": [1.85,1.35,2.07,0.81], "t_name": "酒池肉林"},
+        {"id": "tian_feng", "name": "田豐", "camp": "QUN", "cost": 5, "apt": ["C","S","A","C"], "base": [31,93,79,45], "growth": [0.31,2.42,1.48,0.69], "t_name": "竭忠盡智"},
+        {"id": "wen_chou", "name": "文醜", "camp": "QUN", "cost": 5, "apt": ["A","A","S","S"], "base": [93,25,84,68], "growth": [2.18,0.22,1.51,1.12], "t_name": "登鋒陷陣"},
+        {"id": "yan_liang", "name": "顏良", "camp": "QUN", "cost": 5, "apt": ["S","A","A","S"], "base": [94,38,80,65], "growth": [2.22,0.40,1.38,1.05], "t_name": "勇冠三軍"},
+        {"id": "hua_xiong", "name": "華雄", "camp": "QUN", "cost": 6, "apt": ["S","B","B","S"], "base": [92,54,88,61], "growth": [2.25,0.65,1.65,1.02], "t_name": "搦戰群雄"},
+        {"id": "zhu_jun", "name": "朱儁", "camp": "QUN", "cost": 5, "apt": ["A","B","S","A"], "base": [65,85,86,45], "growth": [1.05,1.75,1.65,0.72], "t_name": "鎮壓黃巾"},
+        {"id": "huangpu_song", "name": "皇甫嵩", "camp": "QUN", "cost": 5, "apt": ["B","A","B","S"], "base": [78,72,86,50], "growth": [1.52,1.35,1.88,0.82], "t_name": "後發制人"},
+        {"id": "lu_lingqi", "name": "呂玲綺", "camp": "QUN", "cost": 6, "apt": ["S","B","A","S"], "base": [89,61,77,69], "growth": [2.32,0.75,1.42,1.28], "t_name": "獅子奮迅"},
+        {"id": "mu_lu_da_wang", "name": "木鹿大王", "camp": "QUN", "cost": 5, "apt": ["S","A","C","A"], "base": [75,72,80,48], "growth": [1.45,1.35,1.62,0.78], "t_name": "象兵"},
+        {"id": "duo_si_da_wang", "name": "朵思大王", "camp": "QUN", "cost": 5, "apt": ["S","B","S","B"], "base": [45,91,78,54], "growth": [0.42,2.28,1.52,0.88], "t_name": "毒泉湧動"},
+        {"id": "meng_huo", "name": "孟獲", "camp": "QUN", "cost": 7, "apt": ["S","S","B","A"], "base": [88,42,88,58], "growth": [2.02,0.42,1.98,0.92], "t_name": "南蠻渠魁"},
+        {"id": "zhu_rong_fu_ren", "name": "祝融夫人", "camp": "QUN", "cost": 6, "apt": ["S","B","A","S"], "base": [85,48,79,64], "growth": [2.05,0.55,1.55,1.15], "t_name": "火神寧墒"},
+        {"id": "gong_sun_zan", "name": "公孫瓚", "camp": "QUN", "cost": 6, "apt": ["S","B","S","B"], "base": [83,70,82,72], "growth": [1.75,1.15,1.52,1.35], "t_name": "白馬義從"},
+        {"id": "yuan_shu", "name": "袁術", "camp": "QUN", "cost": 7, "apt": ["A","B","S","A"], "base": [72,78,74,62], "growth": [1.45,1.65,1.48,1.08], "t_name": "符命自立"},
+        {"id": "cai_wen_ji", "name": "蔡文姬", "camp": "QUN", "cost": 3, "apt": ["C","C","C","C"], "base": [20,76,60,65], "growth": [0.15,1.89,1.15,1.12], "t_name": "胡笳十八拍"},
+        {"id": "li_ru", "name": "李儒", "camp": "QUN", "cost": 5, "apt": ["S","C","A","C"], "base": [32,92,72,58], "growth": [0.28,2.35,1.38,0.95], "t_name": "鴆毒"},
+        {"id": "gao_shun", "name": "高順", "camp": "QUN", "cost": 5, "apt": ["A","S","C","S"], "base": [86,48,88,52], "growth": [1.95,0.52,1.88,0.85], "t_name": "陷陣營"},
+        {"id": "chen_gong", "name": "陳宮", "camp": "QUN", "cost": 4, "apt": ["A","B","S","A"], "base": [45,89,80,56], "growth": [0.45,2.22,1.58,0.92], "t_name": "百計多謀"},
+        {"id": "ju_shou", "name": "沮授", "camp": "QUN", "cost": 6, "apt": ["A","B","S","B"], "base": [38,94,85,55], "growth": [0.35,2.45,1.72,0.90], "t_name": "監統震軍"},
+        {"id": "zhang_ren", "name": "張任", "camp": "QUN", "cost": 5, "apt": ["A","B","S","S"], "base": [84,68,78,65], "growth": [1.85,1.05,1.48,1.18], "t_name": "落鳳"},
+        {"id": "ma_teng", "name": "馬騰", "camp": "QUN", "cost": 6, "apt": ["S","B","B","A"], "base": [86,60,82,68], "growth": [1.95,0.85,1.60,1.20], "t_name": "西涼鐵騎"},
+        {"id": "han_sui", "name": "韓遂", "camp": "QUN", "cost": 5, "apt": ["S","B","A","B"], "base": [78,74,78,62], "growth": [1.60,1.35,1.52,1.05], "t_name": "蓄勢待發"},
+        {"id": "gao_lan", "name": "高覽", "camp": "QUN", "cost": 5, "apt": ["A","B","A","S"], "base": [84,65,82,60], "growth": [1.88,0.92,1.62,1.02], "t_name": "振翅高飛"},
+        {"id": "shen_pei", "name": "審配", "camp": "QUN", "cost": 4, "apt": ["C","A","B","C"], "base": [30,83,76,46], "growth": [0.22,1.98,1.45,0.72], "t_name": "坐守孤城"},
+        {"id": "feng_ji", "name": "逢紀", "camp": "QUN", "cost": 4, "apt": ["C","A","B","C"], "base": [28,84,72,48], "growth": [0.20,2.02,1.35,0.78], "t_name": "腹黑之謀"},
+        {"id": "guo_tu", "name": "郭圖", "camp": "QUN", "cost": 4, "apt": ["C","C","A","C"], "base": [26,82,68,52], "growth": [0.18,1.95,1.25,0.85], "t_name": "進讒害賢"},
+        {"id": "xu_you", "name": "許攸", "camp": "QUN", "cost": 6, "apt": ["A","B","S","B"], "base": [35,93,79,59], "growth": [0.30,2.42,1.48,1.02], "t_name": "傲睨王侯"},
+        {"id": "wu_tugu", "name": "兀突骨", "camp": "QUN", "cost": 5, "apt": ["A","S","C","A"], "base": [85,18,92,42], "growth": [1.88,0.12,2.35,0.65], "t_name": "藤甲兵"},
+        {"id": "dong_bai", "name": "董白", "camp": "QUN", "cost": 3, "apt": ["C","B","B","C"], "base": [25,78,65,60], "growth": [0.22,1.85,1.25,1.02], "t_name": "雲譎波詭"},
+        {"id": "zou_shi", "name": "鄒氏", "camp": "QUN", "cost": 3, "apt": ["C","C","C","C"], "base": [20,77,62,58], "growth": [0.18,1.82,1.18,0.98], "t_name": "顧盼生姿"}
+    ]
 
-    # --- 下載並處理全 S/A 級戰法資料 ---
-    tactics_url = f"{SOURCE_MIRROR_URL}/tactics_sa.json"
-    req_t = urllib.request.Request(tactics_url, headers=headers)
-    
-    try:
-        with urllib.request.urlopen(req_t, timeout=15) as response:
-            raw_tactics = json.loads(response.read().decode('utf-8'))
-            
-        full_tactics = []
-        for t in raw_tactics:
-            # 嚴格只保留 S 級與 A 級戰法 (排除 B/C 級無用戰法)
-            grade = t.get("grade", "S")
-            if grade in ["S", "A"]:
-                full_tactics.append({
-                    "id": t.get("id"),
-                    "name": t.get("name"),
-                    "grade": grade,
-                    "type": t.get("type", "Active"),
-                    "activation_rate": t.get("rate", 0.4),
-                    "execution_priority": t.get("priority", 5),
-                    "tags": t.get("tags", {})
-                })
-                
-        with open(os.path.join(data_dir, "tactics.json"), "w", encoding="utf-8") as f:
-            json.dump(full_tactics, f, ensure_ascii=False, indent=2)
-        print(f"✅ 戰法庫同步完成！共計寫入 {len(full_tactics)} 個 S/A 級戰法。")
+    generals_db = []
+    for g in raw_generals:
+        generals_db.append({
+            "id": g["id"],
+            "name": g["name"],
+            "camp": g["camp"],
+            "cost": g["cost"],
+            "base_aptitude": {"Cavalry": g["apt"][0], "Shield": g["apt"][1], "Bow": g["apt"][2], "Spear": g["apt"][3]},
+            "base_stats": {"force": float(g["base"][0]), "intelligence": float(g["base"][1]), "command": float(g["base"][2]), "speed": float(g["base"][3])},
+            "stat_growth": {"force": float(g["growth"][0]), "intelligence": float(g["growth"][1]), "command": float(g["growth"][2]), "speed": float(g["growth"][3])},
+            "innate_tactic_id": g["t_name"],
+            "innate_tactic_type": "Command"
+        })
 
-    except Exception as e:
-        print(f"⚠️ 線上鏡像抓取戰法失敗: {e}")
+    # =========================================================================
+    # 2. 全 S 級與 A 級戰法庫完整清單
+    # =========================================================================
+    raw_tactics = [
+        # --- S 級：防禦、減傷、淨化、續航 ---
+        ("cao_chuan_jie_jian", "草船借箭", "S", "Active", 0.65, 5, ["S_Tier_Defense", "Purify", "Recovery"]),
+        ("fu_ji_jun_min", "撫輯軍民", "S", "Command", 1.0, 4, ["S_Tier_Defense", "Pre_Round_Reduction"]),
+        ("zan_bi_qi_feng", "暫避其鋒", "S", "Command", 1.0, 4, ["S_Tier_Defense", "Burst_Protection"]),
+        ("gua_gu_liao_du", "刮骨療毒", "S", "Active", 0.40, 5, ["Targeted_Purify", "Emergency_Recovery"]),
+        ("ying_cheng_zi_shou", "嬰城自守", "S", "Active", 0.50, 5, ["Recovery"]),
+        ("bei_she_gui_che", "杯蛇鬼車", "S", "Active", 0.50, 5, ["Damage", "Recovery"]),
+        ("fei_gong_zhi_sheng", "非攻制勝", "S", "Command", 1.0, 4, ["Recovery", "Weapon_Synergy"]),
+        ("zhong_zhi_cheng_cheng", "眾志成城", "S", "Passive", 1.0, 1, ["Heal", "Tactical_Damage"]),
+        ("ding_xiang_si_che", "鼎足蜀道", "S", "Active", 0.45, 5, ["Recovery", "Stat_Buff"]),
+        # --- S 級：控制、破防、突擊 ---
+        ("dang_feng_cui_jue", "當鋒摧決", "S", "Assault", 0.35, 6, ["Core_Breaker", "Pseudo_Report"]),
+        ("sheng_qi_ling_di", "盛氣凌敵", "S", "Command", 1.0, 4, ["Disarm", "Pre_Round_Control"]),
+        ("wei_tian_gong_li", "威謀靡亢", "S", "Active", 0.40, 5, ["Weakness", "True_Damage"]),
+        ("wo_xin_chang_dan", "臥薪嘗膽", "S", "Active", 0.45, 5, ["Stun", "Burst"]),
+        ("heng_sao_qian_jun", "橫掃千軍", "S", "Active", 0.40, 5, ["AOE_Damage", "Stun_Synergy"]),
+        ("po_zhen_cui_jian", "破陣摧堅", "S", "Active", 0.35, 5, ["Armor_Pierce", "Weapon_Damage"]),
+        ("suo_xiang_pi_mi", "所向披靡", "S", "Active", 0.30, 5, ["High_AOE_Physical"]),
+        ("luo_yi_xue_zhan", "裸衣血戰", "S", "Passive", 1.0, 1, ["Continuous_Attack", "Armor_Shed"]),
+        ("yi_ji_dang_qian", "一騎當千", "S", "Assault", 0.30, 6, ["Assault_AOE"]),
+        ("bai_qi_jie_ying", "百騎劫營", "S", "Assault", 0.40, 6, ["Assault_Main_Snipe"]),
+        ("gui_shen_ting_wei", "鬼神霆威", "S", "Assault", 0.35, 6, ["Assault_Execute"]),
+        ("bao_li_wu_ren", "暴戾無仁", "S", "Assault", 0.35, 6, ["Assault_Confusion"]),
+        ("zhe_chong_yu_wu", "折衝禦侮", "S", "Assault", 0.45, 6, ["Protect_Main", "Armor_Pierce"]),
+        ("su_jie_ti_ji", "速乘其利", "S", "Assault", 0.35, 6, ["Silence", "Assault"]),
+        ("ju_shui_duan_qiao", "據水斷橋", "S", "Active", 0.40, 5, ["Debuff_Damage", "Drain"]),
+        ("ji_feng_zhou_yu", "疾風驟雨", "S", "Active", 0.40, 5, ["Multi_Physical_Hit", "Heal_Block"]),
+        ("po_jun_wei_sheng", "破軍威勝", "S", "Active", 0.35, 5, ["Extreme_Burst", "Armor_Pierce"]),
+        ("wan_jian_qi_fa", "萬箭齊發", "S", "Active", 0.40, 5, ["Bow_AOE", "Bleed"]),
+        # --- S 級：謀略輸出 ---
+        ("shi_bie_san_ri", "士別三日", "S", "Passive", 1.0, 1, ["Mage_Survival", "Turn4_Burst"]),
+        ("yong_wu_tong_shen", "用武通神", "S", "Passive", 1.0, 1, ["Late_Turn_Stable_Damage"]),
+        ("tai_ping_dao_fa", "太平道法", "S", "Passive", 1.0, 1, ["Mage_Crit", "Rate_Boost"]),
+        ("duo_hun_xie_po", "奪魂挾魄", "S", "Active", 0.55, 5, ["Stat_Steal", "Debuff"]),
+        ("yan_zhi_you_dao", "焰逐風飛", "S", "Active", 0.35, 5, ["Stun", "Mage_Damage"]),
+        ("si_mian_chu_ge", "四面楚歌", "S", "Active", 0.50, 5, ["Poison_Damage"]),
+        ("chen_sha_jue_ji", "沈沙決水", "S", "Active", 0.40, 5, ["Water_Damage"]),
+        ("fen_ji_du_tian", "焚輜營壘", "S", "Active", 0.35, 5, ["Heal_Block", "Mage_Damage"]),
+        ("feng_zi_zhan", "風助火勢", "S", "Active", 0.45, 5, ["Fire_Damage_Combo"]),
+        # --- S 級：陣法 (Formation) ---
+        ("ba_men_jin_suo", "八門金鎖陣", "S", "Formation", 1.0, 2, ["Pre_Round_Reduction", "First_Strike"]),
+        ("feng_shi_zhen", "鋒矢陣", "S", "Formation", 1.0, 2, ["Single_Core_Amplifier"]),
+        ("san_shi_zhen", "三勢陣", "S", "Formation", 1.0, 2, ["Mixed_Camp_Amplifier"]),
+        ("ji_xing_zhen", "箕形陣", "S", "Formation", 1.0, 2, ["Anti_Main_Burst"]),
+        ("wu_feng_zhen", "武鋒陣", "S", "Formation", 1.0, 2, ["Attract_Fire", "Ramp_Up"]),
+        ("qian_long_zhen", "潛龍陣", "S", "Formation", 1.0, 2, ["Sub_General_Main_Skill"]),
+        ("xing_ji_zhen", "形機能陣", "S", "Formation", 1.0, 2, ["Formation"]),
+        # --- S 級：兵種 (Troop) ---
+        ("teng_jia_bing", "藤甲兵", "S", "Troop", 1.0, 3, ["Extreme_Physical_Defense"]),
+        ("xian_zhen_ying", "陷陣營", "S", "Troop", 1.0, 3, ["Shield_Buff", "First_Heal"]),
+        ("hu_chen_jun", "虎豹騎", "S", "Troop", 1.0, 3, ["Assault_Rate_Buff"]),
+        ("xi_liang_tie_qi", "西涼鐵騎", "S", "Troop", 1.0, 3, ["Crit_Rate_Buff"]),
+        ("bai_ma_yi_cong", "白馬義從", "S", "Troop", 1.0, 3, ["First_Strike", "Active_Rate_Buff"]),
+        ("wu_dang_fei_jun", "無當飛軍", "S", "Troop", 1.0, 3, ["Stat_Buff", "Poison_Damage"]),
+        ("qing_zhou_bing", "青州兵", "S", "Troop", 1.0, 3, ["Counter_Attack", "Heal_Turn3"]),
+        ("da_ji_shi", "大戟士", "S", "Troop", 1.0, 3, ["Normal_Attack_AOE"]),
+        ("jin_fan_jun", "錦帆軍", "S", "Troop", 1.0, 3, ["Bleed_Damage", "Heal"]),
+        ("fei_xiong_jun", "飛熊軍", "S", "Troop", 1.0, 3, ["Heal_Converted_Damage"]),
+        ("hu_wei_jun", "虎衛軍", "S", "Troop", 1.0, 3, ["Main_Protect_Damage"]),
+        ("xiang_bing", "象兵", "S", "Troop", 1.0, 3, ["Damage_Delay_Reduction"]),
+        # --- 經典實用 A 級戰法 ---
+        ("yu_di_ping_zhang", "御敵屏障", "A", "Command", 1.0, 4, ["Pre_Round_Reduction"]),
+        ("luo_feng", "落鳳", "A", "Active", 0.35, 5, ["Silence", "Physical_Burst"]),
+        ("zong_bing_jie_lve", "縱兵劫掠", "A", "Active", 0.35, 5, ["Stun", "Physical_Burst"]),
+        ("bi_shi_ji_xu", "避實擊虛", "A", "Active", 0.40, 5, ["Target_Lowest_Armor"]),
+        ("qing_yong_fei_yan", "輕勇飛燕", "A", "Active", 0.40, 5, ["Multi_Physical_Hit"]),
+        ("bu_ru_shi_ming", "不辱使命", "A", "Active", 0.40, 5, ["Physical_Damage", "Stun"]),
+        ("duan_bing_xiang_jian", "短兵相見", "A", "Active", 0.40, 5, ["Armor_Pierce"]),
+        ("bao_lian_feng_shi", "暴斂四方", "A", "Active", 0.45, 5, ["AOE_Physical"]),
+        ("shou_er_bi_zhi", "手起刀落", "A", "Assault", 0.30, 6, ["Assault_Physical"]),
+        ("wan_gong_yin_yu", "彎弓飲羽", "A", "Assault", 0.40, 6, ["Silence", "Armor_Shed"]),
+        ("bai_lian_cheng_gang", "百煉成鋼", "A", "Passive", 1.0, 1, ["Stat_Buff_All"]),
+        ("hou_fa_zhi_ren", "後發制人", "A", "Passive", 1.0, 1, ["Counter_Attack"]),
+        ("zi_yu", "自愈", "A", "Passive", 1.0, 1, ["Recovery_Every_Turn"]),
+        ("lu_jiang_shang_jia", "廬江上甲", "A", "Active", 0.35, 5, ["Share_Damage"]),
+        ("liao_shi_ru_shen", "料事如神", "A", "Active", 0.35, 5, ["Mage_Damage", "Damage_Reduction"]),
+        ("yan_sheng_qi_zhen", "偃旗息鼓", "A", "Active", 0.40, 5, ["Mage_Amplifier"]),
+        ("sheng_dong_ji_xi", "聲東擊西", "A", "Active", 0.40, 5, ["AOE_Mage"]),
+        ("feng_bo_yan_shou", "風聲鶴唳", "A", "Active", 0.45, 5, ["Sandstorm_AOE"]),
+        ("luo_lei", "落雷", "A", "Active", 0.50, 5, ["High_Mage_Single"]),
+        ("ji_lve_duan_zhi", "機略縱橫", "A", "Active", 0.45, 5, ["Burn_Poison_Dual"]),
+        ("jin_fan_bai_shou", "火熾原燎", "S", "Active", 0.50, 5, ["Burn_AOE"]),
+        ("zheng_zhuang_dai_fa", "整裝待發", "A", "Command", 1.0, 4, ["Recovery_Even_Turns"]),
+        ("zuo_shou_gu_cheng", "坐守孤城", "A", "Active", 0.45, 5, ["Recovery"]),
+        ("qian_li_chi_yuan", "千里馳援", "A", "Active", 0.40, 5, ["Protect_Friendly"]),
+        ("chun_mang_hu_hu", "唇槍舌戰", "A", "Active", 0.50, 5, ["Taunt_AOE"]),
+        ("qiang_gong", "強攻", "A", "Active", 0.45, 5, ["Continuous_Attack_Trigger"]),
+        ("fen_tu", "奮突", "A", "Passive", 1.0, 1, ["Damage_Ramp_Disarm"]),
+        ("bai_mei", "白眉", "A", "Passive", 1.0, 1, ["Active_Rate_Boost"])
+    ]
+
+    tactics_db = []
+    for tid, name, grade, t_type, rate, prio, tags in raw_tactics:
+        tactics_db.append({
+            "id": tid,
+            "name": name,
+            "grade": grade,
+            "type": t_type,
+            "activation_rate": rate,
+            "execution_priority": prio,
+            "tags": {"category": tags}
+        })
+
+    # 寫入檔案
+    with open(os.path.join(data_dir, "generals.json"), "w", encoding="utf-8") as f:
+        json.dump(generals_db, f, ensure_ascii=False, indent=2)
+
+    with open(os.path.join(data_dir, "tactics.json"), "w", encoding="utf-8") as f:
+        json.dump(tactics_db, f, ensure_ascii=False, indent=2)
+
+    print(f"✅ 成功寫入！共計 {len(generals_db)} 位全 5 星武將與 {len(tactics_db)} 個全主流 S/A 戰法。")
 
 if __name__ == "__main__":
     fetch_and_build_complete_database()
