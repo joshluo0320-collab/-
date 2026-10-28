@@ -437,6 +437,14 @@ with st.expander("➕ 快速新增武將至資料庫 (免手動修改 JSON)"):
                     st.cache_data.clear()
                     st.success(f"🎉 成功新增武將【{g_name}】！頁面將自動重新整理。")
                     st.rerun()
+st.markdown("---")
+if st.button("🔄 一鍵同步/重構【全五星武將庫 + 全 S 級戰法庫】"):
+    import sync_full_db
+    sync_full_db.generate_full_database()
+    st.cache_data.clear()
+    st.success("🎉 全武將與全 S 級戰法庫已同步完成！請重新整理頁面。")
+    st.rerun()
+                
                 except Exception as write_err:
                     st.warning(f"本地檔案寫入失敗 ({write_err})。請複製以下 JSON 片段手動貼回 GitHub 的 data/generals.json：")
                     st.code(json.dumps(new_gen_obj, ensure_ascii=False, indent=2), language="json")
