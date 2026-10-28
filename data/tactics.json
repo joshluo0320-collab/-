@@ -1,0 +1,147 @@
+[
+  {
+    "id": "cao_chuan_jie_jian",
+    "name": "草船借箭",
+    "grade": "S",
+    "type": "Active",
+    "activation_rate": 0.65,
+    "execution_priority": 5,
+    "target": "Friendly_Group_2_3",
+    "scaling_stat": "command",
+    "effects": {
+      "purify": true,
+      "emergency_heal": true
+    },
+    "tags": {
+      "category": ["S_Tier_Defense", "Purify", "Recovery"],
+      "stat_demands": ["high_command"]
+    }
+  },
+  {
+    "id": "fu_ji_jun_min",
+    "name": "撫輯軍民",
+    "grade": "S",
+    "type": "Command",
+    "activation_rate": 1.0,
+    "execution_priority": 4,
+    "target": "Friendly_Group_2",
+    "scaling_stat": "command",
+    "effects": {
+      "damage_reduction": 0.26,
+      "delayed_heal": true
+    },
+    "tags": {
+      "category": ["S_Tier_Defense", "Pre_Round_Reduction"],
+      "stat_demands": ["high_command"]
+    }
+  },
+  {
+    "id": "zan_bi_qi_feng",
+    "name": "暫避其鋒",
+    "grade": "S",
+    "type": "Command",
+    "activation_rate": 1.0,
+    "execution_priority": 4,
+    "target": "Friendly_Targeted_2",
+    "scaling_stat": "intelligence",
+    "effects": {
+      "force_damage_reduction": 0.40,
+      "tactical_damage_reduction": 0.40
+    },
+    "tags": {
+      "category": ["S_Tier_Defense", "Burst_Protection"],
+      "stat_demands": ["high_intelligence"]
+    }
+  },
+  {
+    "id": "gua_gu_liao_du",
+    "name": "刮骨療毒",
+    "grade": "S",
+    "type": "Active",
+    "activation_rate": 0.40,
+    "execution_priority": 5,
+    "target": "Friendly_Lowest_HP",
+    "scaling_stat": "intelligence",
+    "effects": {
+      "targeted_purify": true,
+      "massive_heal": true
+    },
+    "tags": {
+      "category": ["Targeted_Purify", "Emergency_Recovery"],
+      "stat_demands": ["high_intelligence"]
+    }
+  },
+  {
+    "id": "feng_shi_zhen",
+    "name": "鋒矢陣",
+    "grade": "S",
+    "type": "Formation",
+    "activation_rate": 1.0,
+    "execution_priority": 2,
+    "target": "All_Friendly",
+    "scaling_stat": null,
+    "effects": {
+      "main_damage_buff": 0.30,
+      "sub_damage_reduction": 0.25
+    },
+    "tags": {
+      "category": ["Single_Core_Amplifier"],
+      "conflicts_with": ["san_shi_zhen"]
+    }
+  },
+  {
+    "id": "dang_feng_cui_jue",
+    "name": "當鋒摧決",
+    "grade": "S",
+    "type": "Assault",
+    "activation_rate": 0.35,
+    "execution_priority": 6,
+    "target": "Single_Enemy",
+    "scaling_stat": "intelligence",
+    "effects": {
+      "pseudo_report": true,
+      "tactical_damage": 1.82
+    },
+    "tags": {
+      "category": ["Core_Breaker", "Control_Counter"],
+      "best_carriers": ["lian_ji_generals"]
+    }
+  },
+  {
+    "id": "heng_sao_qian_jun",
+    "name": "橫掃千軍",
+    "grade": "S",
+    "type": "Active",
+    "activation_rate": 0.40,
+    "execution_priority": 5,
+    "target": "All_Enemy",
+    "scaling_stat": "force",
+    "effects": {
+      "force_damage": 1.0,
+      "conditional_stun": true
+    },
+    "tags": {
+      "category": ["AOE_Damage", "Synergy_Control"],
+      "synergy_tactics": ["sheng_qi_ling_di"]
+    }
+  },
+  {
+    "id": "shi_bie_san_ri",
+    "name": "士別三日",
+    "grade": "S",
+    "type": "Passive",
+    "activation_rate": 1.0,
+    "execution_priority": 1,
+    "target": "Self",
+    "scaling_stat": "intelligence",
+    "effects": {
+      "evasion_buff": 0.30,
+      "turn4_stat_buff": 68.0,
+      "turn4_aoe_damage": 1.80
+    },
+    "tags": {
+      "category": ["Mage_Survival", "Late_Turn_Burst"],
+      "limitations": ["cannot_normal_attack"]
+    }
+  }
+]
